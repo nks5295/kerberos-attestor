@@ -4,3 +4,4 @@
 agent/agent
 server/server
 **/cscope*
+/bin/*
