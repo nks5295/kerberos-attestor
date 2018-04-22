@@ -1,5 +1,5 @@
-hash: b0a6d6c3d24c7cff8de4e034afb1788ef89b0e733ba5afe61579775a7fb232e9
-updated: 2018-04-22T00:54:20.641000358Z
+hash: 14a161e73196524d160f623567c56d8d6f1da6bb042cbf78363caf042ec5186f
+updated: 2018-04-22T02:25:32.512407636Z
 imports:
 - name: github.com/golang/protobuf
   version: e09c5db296004fbe3f74490e84dcd62c3c5ddb1b
@@ -13,7 +13,7 @@ imports:
 - name: github.com/hashicorp/go-hclog
   version: 69ff559dc25f3b435631604f573a5fa1efdb6433
 - name: github.com/hashicorp/go-plugin
-  version: e8d22c780116115ae5624720c9af0c97afe4f551
+  version: e37881a3f1a07fce82b3d99ce0342a72e53386bc
 - name: github.com/hashicorp/hcl
   version: ef8a98b0bbce4a65b5aa4c368430a80ddc533168
   subpackages:
@@ -29,10 +29,8 @@ imports:
   version: 2658be15c5f05e76244154714161f17e3e77de2e
 - name: github.com/mitchellh/go-testing-interface
   version: a61a99592b77c9ba629d254a693acffaeb4b7e28
-- name: github.com/oklog/run
-  version: 6934b124db28979da51d3470dadfa34d73d72652
 - name: github.com/spiffe/spire
-  version: e83766ad3a501cc31299673b1ab76118fefac7fc
+  version: 766aad78fe7a087364bf8cf8f7ff1e99a82ffe12
   subpackages:
   - proto/common
   - proto/common/plugin
