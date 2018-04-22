@@ -1,0 +1,6 @@
+/dist
+/vendor
+.cache
+agent/agent
+server/server
+**/cscope*

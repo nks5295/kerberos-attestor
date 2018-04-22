@@ -1,8 +1,11 @@
+binary_dirs := server
 utils = github.com/goreleaser/goreleaser \
 		github.com/Masterminds/glide
 
-build:
-	go build -i
+build: $(binary_dirs)
+
+$(binary_dirs): noop
+	cd $@ && go build -i
 
 utils: $(utils)
 

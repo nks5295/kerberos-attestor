@@ -1,0 +1,8 @@
+package: github.com/nks5295/kerberos-attestor
+import:
+- package: github.com/hashicorp/go-plugin
+- package: github.com/hashicorp/hcl
+- package: github.com/spiffe/spire
+  subpackages:
+  - proto/common/plugin
+  - proto/server/nodeattestor
