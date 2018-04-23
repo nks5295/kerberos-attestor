@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	SPIREServiceName = "SPIRE"
+	SPIREServiceName = "DNS"
 )
 
 type KrbAttestedData struct {

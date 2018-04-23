@@ -1,4 +1,4 @@
-binary_dirs := server
+binary_dirs := agent server
 out_dir := bin
 
 utils = github.com/goreleaser/goreleaser \

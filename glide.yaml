@@ -3,8 +3,19 @@ import:
 - package: github.com/hashicorp/go-plugin
   version: e37881a3f1a07fce82b3d99ce0342a72e53386bc
 - package: github.com/hashicorp/hcl
-- package: github.com/spiffe/spire
+- package: github.com/Showmax/go-fqdn
 - package: github.com/nks5295/gokrb5
   subpackages:
+  - client
+  - config
+  - credentials
+  - crypto
+  - keytab
+  - messages
+  - service
+  - types
+- package: github.com/spiffe/spire
+  subpackages:
+  - proto/agent/nodeattestor
   - proto/common/plugin
   - proto/server/nodeattestor

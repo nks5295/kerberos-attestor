@@ -1,5 +1,5 @@
-hash: 1069289d2bee4d29b30c3c3b39c7de192673d4d07ffc548e342d8f6a3c248329
-updated: 2018-04-22T03:07:44.123216629Z
+hash: 4e1ac717918a65d4ff1a7d1799cd58f208fa441d7ce9333405a9a871e3d71aeb
+updated: 2018-04-23T01:42:19.301169556Z
 imports:
 - name: github.com/golang/protobuf
   version: e09c5db296004fbe3f74490e84dcd62c3c5ddb1b
@@ -69,13 +69,14 @@ imports:
   - mstypes
   - ndr
   - pac
-  - proto/common/plugin
-  - proto/server/nodeattestor
   - service
   - types
+- name: github.com/Showmax/go-fqdn
+  version: 2501cdd51ef4c60dd727c58b2199e1a09466b10f
 - name: github.com/spiffe/spire
   version: 766aad78fe7a087364bf8cf8f7ff1e99a82ffe12
   subpackages:
+  - proto/agent/nodeattestor
   - proto/common
   - proto/common/plugin
   - proto/server/nodeattestor
