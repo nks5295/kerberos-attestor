@@ -3,11 +3,15 @@ package common
 import (
 	"fmt"
 
-	"github.com/nks5295/gokrb5/messages"
+	gokrb_msgs "github.com/nks5295/gokrb5/messages"
+)
+
+const (
+	SPIREServiceName = "SPIRE"
 )
 
 type KrbAttestedData struct {
-	KrbApReq messages.APReq
+	KrbAPReq gokrb_msgs.APReq
 }
 
 func AttestationStepError(step string, cause error) error {

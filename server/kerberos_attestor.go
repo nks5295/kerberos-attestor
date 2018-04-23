@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"net/url"
+	"os"
 	"path"
 	"sync"
 
@@ -23,24 +24,21 @@ import (
 
 const (
 	pluginName = "kerberos_attestor"
-
-	krbSPIREServiceName = "SPIRE"
 )
 
 type KrbAttestorPlugin struct {
-	trustDomain string
-	krbConfig   gokrb_config.Config
-	krbKeytab   gokrb_keytab.Keytab
-	krbSpireSPN string
+	realm     string
+	krbConfig *gokrb_config.Config
+	keytab    gokrb_keytab.Keytab
+	spireSPN  string
 
 	mtx *sync.Mutex
 }
 
 type KrbAttestorConfig struct {
-	TrustDomain   string `hcl:"trust_domain"`
+	KrbRealm      string `hcl:"krb_realm"`
 	KrbConfPath   string `hcl:"krb_conf_path"`
 	KrbKeytabPath string `hcl:"krb_keytab_path"`
-	ServerFQDN    string `hcl:server_fqdn`
 }
 
 func New() *KrbAttestorPlugin {
@@ -53,25 +51,25 @@ func (k *KrbAttestorPlugin) spiffeID(krbCreds gokrb_creds.Credentials) *url.URL 
 	spiffePath := path.Join("spire", "agent", pluginName, krbCreds.Domain(), krbCreds.DisplayName())
 	id := &url.URL{
 		Scheme: "spiffe",
-		Host:   k.trustDomain,
+		Host:   k.realm,
 		Path:   spiffePath,
 	}
 	return id
 }
 
 func (k *KrbAttestorPlugin) Attest(req *nodeattestor.AttestRequest) (*nodeattestor.AttestResponse, error) {
-	var krbAttestedData krbc.KrbAttestedData
+	var attestedData krbc.KrbAttestedData
 	var buf bytes.Buffer
 
 	buf.Write(req.AttestedData.Data)
 	dec := gob.NewDecoder(&buf)
-	err := dec.Decode(&krbAttestedData.KrbApReq)
+	err := dec.Decode(&attestedData)
 	if err != nil {
 		err = krbc.AttestationStepError("decoding KRB_AP_REQ from attestation data", err)
 		return &nodeattestor.AttestResponse{Valid: false}, err
 	}
 
-	valid, creds, err := gokrb_service.ValidateAPREQ(krbAttestedData.KrbApReq, k.krbKeytab, k.krbSpireSPN, "0", false)
+	valid, creds, err := gokrb_service.ValidateAPREQ(attestedData.KrbAPReq, k.keytab, k.spireSPN, "0", false)
 	if err != nil {
 		err = krbc.AttestationStepError("validating KRB_AP_REQ", err)
 		return &nodeattestor.AttestResponse{Valid: false}, err
@@ -120,12 +118,17 @@ func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.Configure
 		return resp, err
 	}
 
-	spireSPN := fmt.Sprintf("%s/%s", krbSPIREServiceName, config.ServerFQDN)
+	hostname, err := os.Hostname()
+	if err != nil {
+		err := fmt.Errorf("Error obtaining hostname: %s", err)
+		return resp, err
+	}
+	spireSPN := fmt.Sprintf("%s/%s", krbc.SPIREServiceName, hostname)
 
-	k.trustDomain = config.TrustDomain
-	k.krbConfig = *krbCfg
-	k.krbKeytab = krbKt
-	k.krbSpireSPN = spireSPN
+	k.realm = config.KrbRealm
+	k.krbConfig = krbCfg
+	k.keytab = krbKt
+	k.spireSPN = spireSPN
 
 	return &spi.ConfigureResponse{}, nil
 }
