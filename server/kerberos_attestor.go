@@ -5,8 +5,8 @@ import (
 	"encoding/gob"
 	"fmt"
 	"net/url"
-	"os"
 	"path"
+	"strings"
 	"sync"
 
 	gokrb_config "github.com/nks5295/gokrb5/config"
@@ -14,6 +14,7 @@ import (
 	gokrb_keytab "github.com/nks5295/gokrb5/keytab"
 	gokrb_service "github.com/nks5295/gokrb5/service"
 
+	fqdn "github.com/Showmax/go-fqdn"
 	"github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/hcl"
 
@@ -51,7 +52,7 @@ func (k *KrbAttestorPlugin) spiffeID(krbCreds gokrb_creds.Credentials) *url.URL 
 	spiffePath := path.Join("spire", "agent", pluginName, krbCreds.Domain(), krbCreds.DisplayName())
 	id := &url.URL{
 		Scheme: "spiffe",
-		Host:   k.realm,
+		Host:   strings.ToLower(k.realm),
 		Path:   spiffePath,
 	}
 	return id
@@ -118,9 +119,9 @@ func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.Configure
 		return resp, err
 	}
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		err := fmt.Errorf("Error obtaining hostname: %s", err)
+	hostname := fqdn.Get()
+	if hostname == "unknown" {
+		err := fmt.Errorf("Error getting machine FQDN")
 		return resp, err
 	}
 	spireSPN := fmt.Sprintf("%s/%s", krbc.SPIREServiceName, hostname)
