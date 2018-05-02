@@ -1,4 +1,4 @@
-package: github.com/nks5295/kerberos-attestor
+package: github.com/spiffe/kerberos-attestor
 import:
 - package: github.com/hashicorp/go-plugin
   version: e37881a3f1a07fce82b3d99ce0342a72e53386bc

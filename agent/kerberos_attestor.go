@@ -25,7 +25,7 @@ import (
 	"github.com/spiffe/spire/proto/common"
 	spi "github.com/spiffe/spire/proto/common/plugin"
 
-	krbc "github.com/nks5295/kerberos-attestor/common"
+	krbc "github.com/spiffe/kerberos-attestor/common"
 )
 
 const (

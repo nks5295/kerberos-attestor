@@ -18,7 +18,7 @@ import (
 	"github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/hcl"
 
-	krbc "github.com/nks5295/kerberos-attestor/common"
+	krbc "github.com/spiffe/kerberos-attestor/common"
 	spi "github.com/spiffe/spire/proto/common/plugin"
 	"github.com/spiffe/spire/proto/server/nodeattestor"
 )
