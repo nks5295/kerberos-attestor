@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/gob"
 	"fmt"
 	"net/url"
@@ -65,7 +66,7 @@ func (k *KrbAttestorPlugin) spiffeID(krbCreds gokrb_creds.Credentials) *url.URL 
 	return id
 }
 
-func (k *KrbAttestorPlugin) FetchAttestationData(*nodeattestor.FetchAttestationDataRequest) (*nodeattestor.FetchAttestationDataResponse, error) {
+func (k *KrbAttestorPlugin) FetchAttestationData(ctx context.Context, req *nodeattestor.FetchAttestationDataRequest) (*nodeattestor.FetchAttestationDataResponse, error) {
 	var buf bytes.Buffer
 
 	krbClient := gokrb_client.NewClientWithKeytab(k.username, k.realm, k.keytab)
@@ -130,7 +131,7 @@ func (k *KrbAttestorPlugin) FetchAttestationData(*nodeattestor.FetchAttestationD
 	return resp, nil
 }
 
-func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.ConfigureResponse, error) {
+func (k *KrbAttestorPlugin) Configure(ctx context.Context, req *spi.ConfigureRequest) (*spi.ConfigureResponse, error) {
 	resp := &spi.ConfigureResponse{}
 	config := &KrbAttestorConfig{}
 
@@ -177,7 +178,7 @@ func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.Configure
 	return &spi.ConfigureResponse{}, nil
 }
 
-func (k *KrbAttestorPlugin) GetPluginInfo(*spi.GetPluginInfoRequest) (*spi.GetPluginInfoResponse, error) {
+func (k *KrbAttestorPlugin) GetPluginInfo(context.Context, *spi.GetPluginInfoRequest) (*spi.GetPluginInfoResponse, error) {
 	panic("not implemented")
 }
 

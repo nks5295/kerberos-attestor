@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/gob"
 	"fmt"
 	"net/url"
@@ -58,7 +59,7 @@ func (k *KrbAttestorPlugin) spiffeID(krbCreds gokrb_creds.Credentials) *url.URL 
 	return id
 }
 
-func (k *KrbAttestorPlugin) Attest(req *nodeattestor.AttestRequest) (*nodeattestor.AttestResponse, error) {
+func (k *KrbAttestorPlugin) Attest(ctx context.Context, req *nodeattestor.AttestRequest) (*nodeattestor.AttestResponse, error) {
 	var attestedData krbc.KrbAttestedData
 	var buf bytes.Buffer
 
@@ -89,7 +90,7 @@ func (k *KrbAttestorPlugin) Attest(req *nodeattestor.AttestRequest) (*nodeattest
 	return &nodeattestor.AttestResponse{Valid: false}, err
 }
 
-func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.ConfigureResponse, error) {
+func (k *KrbAttestorPlugin) Configure(ctx context.Context, req *spi.ConfigureRequest) (*spi.ConfigureResponse, error) {
 	resp := &spi.ConfigureResponse{}
 	config := &KrbAttestorConfig{}
 
@@ -134,7 +135,7 @@ func (k *KrbAttestorPlugin) Configure(req *spi.ConfigureRequest) (*spi.Configure
 	return &spi.ConfigureResponse{}, nil
 }
 
-func (k *KrbAttestorPlugin) GetPluginInfo(*spi.GetPluginInfoRequest) (*spi.GetPluginInfoResponse, error) {
+func (k *KrbAttestorPlugin) GetPluginInfo(context.Context, *spi.GetPluginInfoRequest) (*spi.GetPluginInfoResponse, error) {
 	return &spi.GetPluginInfoResponse{}, nil
 }
 
